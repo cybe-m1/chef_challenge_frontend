@@ -18,13 +18,9 @@ const Home: NextPage = () => {
           {label: "Receipes", link: "/receipes" },
           {label: "Challenges", link: "/challenges" },
           {label: "Ingredients", link: "/ingredients" },
-          {label: "Profile", link: "/users" },
+          {label: "Profile", link: "/users" }
         ]} />
       </header>
-
-      <main className={styles.main}>
-        <h1>Chef Challenge</h1>
-      </main>
 
       <footer className={styles.footer}>
       </footer>
@@ -32,4 +28,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Home;
