@@ -1,5 +1,7 @@
 name: Build Next App
 
+on: push
+
 jobs:
   build:
     runs-on: node:latest
