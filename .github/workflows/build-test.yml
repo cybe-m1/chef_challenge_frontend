@@ -1,0 +1,11 @@
+name: Build Next App
+
+jobs:
+  build:
+    runs-on: node:latest
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v2
+      - run: npm install -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
