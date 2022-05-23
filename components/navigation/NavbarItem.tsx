@@ -10,7 +10,7 @@ const NavbarItem = ({label, link = "/"}: NavbarItemIterface): JSX.Element => {
     return (
         <div>
             <Link href={link}>
-                <a>{label}</a>
+                <a className='typoNavItem m-3'>{label}</a>
             </Link>
         </div>
     )

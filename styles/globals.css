@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+	min-height: 100%;
+}
+
+.typoColor {
+    color: #FFB84E;
+}
+
+.typoNavItem {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 23px;
+    font-size: 1.5em;
+}
+
+.toque {
+    left: 3.35%;
+    right: 93.59%;
+    top: 0.56%;
+    bottom: 92.21%;
+
+    transform: rotate(23.7deg);
+}
+
+.typoToque {
+    width: 300px;
+    height: 63px;
+    left: 85px;
+    top: 8px;
+    font-size: 2.5em;
+}
+
+.shadowNav {
+    background-color: #fff;
+    box-shadow: 0 0 20px 0px #ddd;
+}
