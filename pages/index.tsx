@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Navbar from '../components/navigation/Navbar'
 
@@ -13,7 +12,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header>
+      <header className='shadowNav'>
         <Navbar mainitem={{label: "Chef Challenge", link: "/"}} items = {[
           {label: "Receipes", link: "/receipes" },
           {label: "Challenges", link: "/challenges" },
