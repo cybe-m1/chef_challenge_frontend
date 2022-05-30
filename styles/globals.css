@@ -10,6 +10,18 @@ html, body {
     color: #FFB84E;
 }
 
+.backgroundChef {
+    background-color: #FFB84E;
+}
+
+.backgroundChefButton {
+    background-color: #FFB84E;
+}
+
+.backgroundChefButton:hover {
+    background-color: #ffbe5c;
+}
+
 .typoNavItem {
     font-family: 'Roboto';
     font-style: normal;

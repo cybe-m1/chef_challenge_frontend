@@ -10,12 +10,15 @@ interface NavbarInterface {
 const Navbar = ({mainitem, items}: NavbarInterface) : JSX.Element => {
     return (
         <div>
-            <nav className="flex mb-3 ml-6 mr-5 flex-row typoColor">
+            <nav className="flex mb-3 ml-6 mr-5 items-stretch flex-row typoColor">
                 <div>
                     {mainitem != undefined ? <MainNavbarItem link={mainitem.link} label={mainitem.label} /> : null}
                 </div>
-                <div className="flex flex-row ml-5 items-center mt-2">
+                <div className="flex flex-row grow ml-5 items-center mt-2">
                     {items.map((item) => (<NavbarItem key={item.link} link={item.link} label={item.label}/>))}
+                </div> 
+                <div className="flex flex-row ml-5 items-center mt-2">
+                    <NavbarItem key="/login" link="/login" label="Se connecter"/>
                 </div> 
             </nav>
         </div>
