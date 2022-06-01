@@ -1,20 +1,53 @@
 import { NextPage } from "next";
-import Layout from '../components/layout/Layout'
+import { useState } from "react";
+import { useRouter } from 'next/router'
+import  axios  from "axios"
 
-const LoginPage: NextPage = () => {
-    const connexion : React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) =>  {
-        event.preventDefault();
-        console.log('yrds')
-        const username = null
-        const password = null
+type State = {
+    username: string;
+    password: string;
+    wrong: boolean;
+};
+
+const LoginPage: NextPage = () => { 
+    const router = useRouter()
+
+    const [state, setState] = useState({
+        username: "",
+        password: "",
+        wrong: false
+    })
+    
+    const connexion : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
+        event.preventDefault()
+        console.log(state)
+        const form = {
+            username: state.username,
+            password: state.password
+        }
         
-        const endpoint = 'localhost:8081/api/user/username=' + username + '/password=' + password
+        const endpoint = 'http://localhost:8082/user/connexion'
+
+        try {
+            const data = await axios.post(endpoint, form)
+            console.log(data)
+            localStorage.setItem('user', JSON.stringify(data.data));
+            if(data.status === 200) {
+                router.push('/')
+            }
+        } catch (error) {
+            setState({...state, wrong : true})
+            let contenuPage = document.getElementById('error');
+            const contenu = '<p class="text-red-500 text-xs italic">Le mot de passe ou identifiant faux !</p>'
+            contenuPage!.innerHTML = contenu
+        }
+        
     }
+
     return (
-        <Layout>
             <div className="md:w-1/2 max-w-sm md:m-auto absolute md:inset-60">
-                <form className="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4">
-                    <div className="mb-4">
+                <form className="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4" onSubmit={connexion}>
+                    <div id="connexion" className="mb-4">
                         <label htmlFor="username" className="block typoColor text-sm font-bold mb-2">
                             Identifiant
                         </label>
@@ -22,6 +55,8 @@ const LoginPage: NextPage = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
                             type="text" 
                             placeholder="Identifiant"
+                            value={state.username}
+                            onChange={event => setState({...state, username : event.target.value})}
                             required />
                         </div>
                         <div className="mb-6">
@@ -32,8 +67,10 @@ const LoginPage: NextPage = () => {
                             className='shadow appearance-none border rounded w-full py-2 px-3 typoColor mb-3 leading-tight focus:outline-none focus:shadow-outline' 
                             type="password" 
                             placeholder="******************"
+                            value={state.password}
+                            onChange={event => setState({...state, password : event.target.value})}
                             required />
-                        <p className="text-red-500 text-xs italic">Le mot de passe ou l'identifiant est faux !</p>
+                        <div id="error"></div>
                     </div>
                     <div className="flex items-center justify-between">
                         <button className="backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
@@ -50,7 +87,6 @@ const LoginPage: NextPage = () => {
                     </div>
                 </form>
             </div>
-        </Layout>
     )
 }
 
