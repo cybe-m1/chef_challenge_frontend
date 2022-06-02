@@ -81,7 +81,7 @@ const LoginPage: NextPage = () => {
                         </a>
                     </div>
                     <div className="flex items-center justify-between mt-3">
-                        <button className=" m-auto backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                        <button className=" m-auto backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => router.push('/register')}>
                             Créé un compte
                         </button>
                     </div>
