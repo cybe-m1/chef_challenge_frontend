@@ -1,9 +1,29 @@
 import { NextPage } from "next";
+import  axios  from "axios"
 
-const ReceipesPage: NextPage = () => {
+export async function getStaticProps() {
+    const resp = await axios.get(
+      "http://localhost:8084/recipe"
+    );
+
+    return {
+      props: {
+        Recettes: await resp.data,
+      },
+    };
+  }
+
+const ReceipesPage: NextPage = ({ Recettes } : any) => {
     return (
         <div>
-            Receipes
+            <h2>Liste des recettes</h2>
+            <div className="flex flex-wrap">
+                {Recettes.map((Recette: any) => (
+                    <div className="m-2" key={Recette.id}>
+                        <h3>{Recette.name}</h3>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
