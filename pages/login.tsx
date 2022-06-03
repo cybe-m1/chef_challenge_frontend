@@ -1,13 +1,8 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
+import Cookie from "js-cookie"
 import  axios  from "axios"
-
-type State = {
-    username: string;
-    password: string;
-    wrong: boolean;
-};
 
 const LoginPage: NextPage = () => { 
     const router = useRouter()
@@ -17,6 +12,11 @@ const LoginPage: NextPage = () => {
         password: "",
         wrong: false
     })
+
+    const [remember, setRemember] = useState({})
+    useEffect(() => {
+        Cookie.set("user", JSON.stringify(remember))
+    }, [remember])
     
     const connexion : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
         event.preventDefault()
@@ -30,8 +30,7 @@ const LoginPage: NextPage = () => {
 
         try {
             const data = await axios.post(endpoint, form)
-            console.log(data)
-            localStorage.setItem('user', JSON.stringify(data.data));
+            setRemember(JSON.stringify(data.data));
             if(data.status === 200) {
                 router.push('/')
             }
