@@ -30,7 +30,7 @@ const LoginPage: NextPage = () => {
 
         try {
             const data = await axios.post(endpoint, form)
-            setRemember(JSON.stringify(data.data));
+            setRemember(JSON.stringify(data.data.id_user));
             if(data.status === 200) {
                 router.push('/')
             }
