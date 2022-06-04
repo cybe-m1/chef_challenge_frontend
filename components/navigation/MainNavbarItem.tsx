@@ -1,7 +1,6 @@
 import { NavbarItemIterface } from "./NavbarItem";
 import Link from 'next/link'
 import Image from 'next/image'
-// import toque from '../public/toque_chef_2.png'
 
 const MainNavbarItem = ({label, link = "#"}: NavbarItemIterface): JSX.Element => {
     return (
