@@ -2,9 +2,30 @@ import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Cookie from "js-cookie"
+import cookie from "cookie"
 import  axios  from "axios"
 
-const LoginPage: NextPage = () => { 
+export async function getServerSideProps({req}: any) {
+    const getCookie = cookie.parse(req.headers.cookie)
+    if(getCookie.user.length > 2) {
+      let pars = JSON.parse(getCookie.user)
+      pars = JSON.parse(pars)
+
+      return {
+        props: {
+          cookieAlreadyHere: pars,
+        },
+      };
+    } else {
+      return {
+        props: {
+            cookieAlreadyHere: {},
+        },
+      };
+    }
+}
+
+const LoginPage: NextPage = ({ cookieAlreadyHere } : any) => { 
     const router = useRouter()
 
     const [state, setState] = useState({
@@ -13,9 +34,12 @@ const LoginPage: NextPage = () => {
         wrong: false
     })
 
-    const [remember, setRemember] = useState({})
+    const [remember, setRemember] = useState(cookieAlreadyHere)
     useEffect(() => {
-        Cookie.set("user", JSON.stringify(remember))
+        console.log(cookieAlreadyHere)
+        if(isNaN(cookieAlreadyHere)) {
+            Cookie.set("user", JSON.stringify(remember))
+        }
     }, [remember])
     
     const connexion : React.FormEventHandler<HTMLFormElement> = async (event) =>  {

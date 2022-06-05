@@ -1,7 +1,7 @@
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
 import cookie from "cookie"
 import axios from "axios"
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps({req}: any) {
     const getCookie = cookie.parse(req.headers.cookie)
@@ -28,6 +28,8 @@ export async function getServerSideProps({req}: any) {
 }
 
 const UserPage: NextPage = ({ user } : any) => {
+    const router = useRouter()
+
     if (user != '') {
       return (
         <div className="xl:h-full flex flex-col">
@@ -44,8 +46,16 @@ const UserPage: NextPage = ({ user } : any) => {
               <span>Email : {user.email}</span>
             </div>
             <div className="mb-4">
-              <button className="backgroundChefButton text-white mr-3 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Modifier le compte</button>
-              <button className="backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Supprimer le compte</button>
+              <button className="backgroundChefButton text-white mr-3 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                      type="button"
+                      onClick={() => router.push('/modifyAccount')}
+                      >Modifier le compte
+              </button>
+              <button className="backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                      type="button"
+                      onClick={() => router.push('/destroyAccount')}
+                      >Supprimer le compte
+              </button>
             </div>
           </div>
         </div>
