@@ -18,6 +18,7 @@ jobs:
 
   unit-tests:
     <<: *shared-config
+    image: cypress/base:8
     steps:
       - checkout
       - restore_cache:
