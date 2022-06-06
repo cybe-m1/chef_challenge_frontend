@@ -17,10 +17,9 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}-v2
 
   unit-tests:
-    <<: *shared-config
-    # docker:
-    #   - image: cypress/base:8
-    # working_directory: ~/repo
+    docker:
+      - image: cypress/base:8
+    working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
