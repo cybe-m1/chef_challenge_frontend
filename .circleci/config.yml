@@ -1,0 +1,95 @@
+version: 2
+jobs:
+  install: &shared-config
+    docker:
+      - image: circleci/node:lts-fermium
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ checksum "package.json" }}-v1
+
+  unit-tests:
+    <<: *shared-config
+    steps:
+      - checkout
+      - restore_cache:
+          keys: dependencies-{{ checksum "package.json" }}-v1
+      - run: yarn test:unit
+
+  build:
+    <<: *shared-config
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-
+      - run: yarn build
+
+  front-netlify-deploy:
+    <<: *shared-config
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-
+      - run:
+          name: Install netlify
+          command: |
+            yarn add -D netlify-cli
+      - run:
+          name: Deploy app
+          command: yarn netlify deploy --auth $NETLIFY_AUTH_TOKEN --dir ~/repo --site $NETLIFY_SITE_ID --prod
+
+  docker-build-and-push:
+    working_directory: /dockerapp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=app -t app .
+      - deploy:
+          name: Publish application to docker hub
+          command: |
+            docker login -e $PROD_EMAIL -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker tag app $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:$CIRCLE_BUILD_NUM
+            docker tag app $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:latest
+            docker push $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:$CIRCLE_BUILD_NUM
+            docker push $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:latest
+workflows:
+  version: 2
+  build-test-and-lint:
+    jobs:
+      - install
+      - unit-tests:
+          requires:
+            - install
+      - build:
+          requires:
+            - unit-tests
+      - front-netlify-deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - docker-build-and-push:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

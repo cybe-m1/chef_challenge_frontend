@@ -53,7 +53,7 @@ const DestroyAccount: NextPage = ({ user } : any) => {
         <div className="text-center ml-5 mr-5 mb-5">
           <div className="mb-4">
             <h1>Êtes vous sur de vouloir détruire votre compte ? cette opération est irréversible !</h1>
-            <button className="bg-red-600 text-white mr-3 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={destroyAccount}>Oui</button>
+            <button className="bg-red-600 text-white mr-3 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => destroyAccount}>Oui</button>
             <button className="backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => router.push('/')}>Non</button>
           </div>
         </div>
