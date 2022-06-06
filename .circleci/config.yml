@@ -8,20 +8,20 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-{{ checksum "package.json" }}-v2
             - dependencies-
       - run: yarn install
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-{{ checksum "package.json" }}-v1
+          key: dependencies-{{ checksum "package.json" }}-v2
 
   unit-tests:
     <<: *shared-config
     steps:
       - checkout
       - restore_cache:
-          keys: dependencies-{{ checksum "package.json" }}-v1
+          keys: dependencies-{{ checksum "package.json" }}-v2
       - run: yarn cypress:headless
 
   build:
@@ -30,7 +30,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-{{ checksum "package.json" }}-v2
             - dependencies-
       - run: yarn build
 
@@ -40,7 +40,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}-v1
+            - dependencies-{{ checksum "package.json" }}-v2
             - dependencies-
       - run:
           name: Install netlify
