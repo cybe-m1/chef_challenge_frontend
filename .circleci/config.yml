@@ -18,11 +18,14 @@ jobs:
 
   unit-tests:
     <<: *shared-config
-    image: cypress/base:8
+    # docker:
+    #   - image: cypress/base:8
+    # working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
-          keys: dependencies-{{ checksum "package.json" }}-v2
+          keys:
+            - dependencies-{{ checksum "package.json" }}-v2
       - run: yarn add cypress
       - run: yarn cypress:headless
 
