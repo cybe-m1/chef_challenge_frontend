@@ -25,7 +25,7 @@ jobs:
       - restore_cache:
           keys:
             - dependencies-{{ checksum "package.json" }}-v2
-      - run: yarn add cypress
+      - run: yarn add cypress --ignore-engines
       - run: yarn cypress:headless
 
   build:
