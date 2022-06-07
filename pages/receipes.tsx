@@ -11,11 +11,11 @@ export async function getServerSideProps({req}: any) {
       
       try {
         const resp = await axios.get(
-          "http://localhost:8082/user/" + pars
+          process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
         );
   
         const recipes = await axios.get(
-          "http://localhost:8084/recipe"
+          process.env.NEXT_PUBLIC_BACKEND_URL + "/recipe"
         );
         return {
           props: {
@@ -39,7 +39,7 @@ export async function getServerSideProps({req}: any) {
     } else {
       try {
         const recipes = await axios.get(
-          "http://localhost:8084/recipe"
+          process.env.NEXT_PUBLIC_BACKEND_URL + "/recipe"
         );
         return {
           props: {

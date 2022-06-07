@@ -50,7 +50,7 @@ const LoginPage: NextPage = ({ cookieAlreadyHere } : any) => {
             password: state.password
         }
         
-        const endpoint = 'http://localhost:8082/user/connexion'
+        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user/connexion"
 
         try {
             const data = await axios.post(endpoint, form)
