@@ -11,7 +11,7 @@ export async function getServerSideProps({req}: any) {
       pars = JSON.parse(pars)
 
       const resp = await axios.get(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
+        "http://localhost:9998/user/" + pars
       );
 
       return {
@@ -33,9 +33,8 @@ const DestroyAccount: NextPage = ({ user } : any) => {
 
     const destroyAccount = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>  {
       event.preventDefault()
-      console.log(event)
       
-      const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + user.id_user
+      const endpoint = "http://localhost:9998/user/" + user.id_user
 
       try {
           const data = await axios.delete(endpoint)

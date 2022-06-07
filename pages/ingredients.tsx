@@ -11,11 +11,11 @@ export async function getServerSideProps({req}: any) {
         
         try {
           const resp = await axios.get(
-            process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
+            "http://localhost:9998/user/" + pars
           );
 
           const recipes = await axios.get(
-            process.env.NEXT_PUBLIC_BACKEND_URL + "/ingredient"
+            "http://localhost:9998/stock/user/" + pars
           );
           return {
             props: {
@@ -39,7 +39,7 @@ export async function getServerSideProps({req}: any) {
       } else {
         try {
           const ingredient = await axios.get(
-            "http://localhost:8083/ingredient"
+            "http://localhost:9998/ingredient"
           );
           return {
             props: {
@@ -82,7 +82,7 @@ const IngredientsPage: NextPage = ({ user, Ingredients, error } : any) => {
                         src={`${Ingredient.url}`}
                         alt={Ingredient.name}
                     />
-                    <h3>{Ingredient.name}</h3>
+                    <h3>{Ingredient.name} {Ingredient.quantity}</h3>
                 </div>
                 ))}
             </div>
@@ -95,16 +95,7 @@ const IngredientsPage: NextPage = ({ user, Ingredients, error } : any) => {
               <h2>Liste des ingrédient</h2>
             </div>
             <div className="flex flex-wrap">
-                {Ingredients.map((Ingredient: any) => (
-                <div className="text-center" key={Ingredient.id_challenge}>
-                    <img
-                        className="object-contain h-32 w-68"
-                        src={`${Ingredient.url}`}
-                        alt={Ingredient.name}
-                    />
-                    <h3>{Ingredient.name}</h3>
-                </div>
-                ))}
+                Veuillez vous connectez pour voir vos ingrédients
             </div>
           </div>
         )

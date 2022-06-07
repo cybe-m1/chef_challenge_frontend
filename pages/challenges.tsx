@@ -4,7 +4,7 @@ import  axios  from "axios"
 export async function getStaticProps() {
     try {
         const resp = await axios.get(
-            process.env.NEXT_PUBLIC_BACKEND_URL + "/challenge"
+            "http://localhost:9998/challenge"
         );
   
         return {

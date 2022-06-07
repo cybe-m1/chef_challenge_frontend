@@ -36,7 +36,6 @@ const LoginPage: NextPage = ({ cookieAlreadyHere } : any) => {
 
     const [remember, setRemember] = useState(cookieAlreadyHere)
     useEffect(() => {
-        console.log(cookieAlreadyHere)
         if(isNaN(cookieAlreadyHere)) {
             Cookie.set("user", JSON.stringify(remember))
         }
@@ -44,13 +43,13 @@ const LoginPage: NextPage = ({ cookieAlreadyHere } : any) => {
     
     const connexion : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
         event.preventDefault()
-        console.log(state)
+
         const form = {
             username: state.username,
             password: state.password
         }
         
-        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user/connexion"
+        const endpoint = "http://localhost:8082/user/connexion"
 
         try {
             const data = await axios.post(endpoint, form)

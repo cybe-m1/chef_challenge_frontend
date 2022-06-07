@@ -11,11 +11,11 @@ export async function getServerSideProps({req}: any) {
       
       try {
         const resp = await axios.get(
-          process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
+          "http://localhost:9998/user/" + pars
         );
   
         const recipes = await axios.get(
-          process.env.NEXT_PUBLIC_BACKEND_URL + "/recipe"
+          "http://localhost:9998/recipe"
         );
         return {
           props: {
@@ -39,7 +39,7 @@ export async function getServerSideProps({req}: any) {
     } else {
       try {
         const recipes = await axios.get(
-          process.env.NEXT_PUBLIC_BACKEND_URL + "/recipe"
+          "http://localhost:9998/recipe"
         );
         return {
           props: {
@@ -73,9 +73,14 @@ const ReceipesPage: NextPage = ({ user, Recettes, error } : any) => {
                 Ajouter une recette
               </button>
             </div>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap text-center">
                 {Recettes.map((Recette: any) => (
                     <div className="m-2" key={Recette.id}>
+                        <img
+                          className="object-contain h-32 w-68"
+                          src={`${Recette.url}`}
+                          alt={Recette.name}
+                        />
                         <h3>{Recette.name}</h3>
                     </div>
                 ))}
