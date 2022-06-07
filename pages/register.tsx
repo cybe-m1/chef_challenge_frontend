@@ -26,7 +26,7 @@ const RegisterPage: NextPage = () => {
 
     const register : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
         event.preventDefault()
-        console.log(state)
+
         const form = {
             pseudo: state.username,
             password: state.password,
@@ -35,11 +35,11 @@ const RegisterPage: NextPage = () => {
             email: state.email,
         }
         
-        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user"
+        const endpoint = "http://localhost:9998/user"
 
         try {
             const data = await axios.post(endpoint, form)
-            console.log(data)
+
             localStorage.setItem('user', JSON.stringify(data.data));
             if(data.status === 200) {
                 router.push('/login')

@@ -11,7 +11,7 @@ export async function getServerSideProps({req}: any) {
       pars = JSON.parse(pars)
 
       const resp = await axios.get(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
+        "http://localhost:9998/user/" + pars
       );
 
       return {
@@ -33,15 +33,17 @@ const AddIngredientsPage: NextPage = ({ user, error } : any) => {
     const router = useRouter()
 
     const [ingredient, setIngredient] = useState({
+        id_user: user.id_user,
         name: "",
-        url: ""
+        url: "",
+        quantity: 0
     })
 
     const addIngredient : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
         event.preventDefault()
         const form = ingredient
         
-        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/ingredient"
+        const endpoint = "http://localhost:9998/stock"
 
         try {
             const data = await axios.post(endpoint, form)
@@ -81,6 +83,18 @@ const AddIngredientsPage: NextPage = ({ user, error } : any) => {
                         placeholder="Nom de l'ingrédient"
                         value={ingredient.name}
                         onChange={event => setIngredient({...ingredient, name : event.target.value})}
+                        required />
+                </div>
+                <div className="mb-4 mt-5">
+                    <label htmlFor="quantity" className="block typoColor text-sm font-bold mb-2">
+                        Quantité
+                    </label>
+                    <input id="quantity" 
+                        className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
+                        type="number" 
+                        placeholder="Quantité en possesion"
+                        value={ingredient.quantity}
+                        onChange={event => setIngredient({...ingredient, quantity : Number(event.target.value)})}
                         required />
                 </div>
                 <div className="flex items-center justify-between mt-3">

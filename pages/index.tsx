@@ -11,7 +11,7 @@ export async function getServerSideProps({req}: any) {
       
       try {
         const resp = await axios.get(
-          "http://localhost:8082/user/" + pars
+          "http://localhost:9998/user/" + pars
         );
   
         return {

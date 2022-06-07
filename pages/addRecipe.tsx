@@ -11,7 +11,7 @@ export async function getServerSideProps({req}: any) {
       pars = JSON.parse(pars)
 
       const resp = await axios.get(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
+        "http://localhost:9998/user/" + pars
       );
 
       return {
@@ -33,6 +33,7 @@ const AddRecipePage: NextPage = ({ user, error } : any) => {
     const router = useRouter()
 
     const [recipe, setRecipe] = useState({
+        url: "",
         name: ""
     })
 
@@ -40,7 +41,7 @@ const AddRecipePage: NextPage = ({ user, error } : any) => {
         event.preventDefault()
         const form = recipe
         
-        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/recipe"
+        const endpoint = "http://localhost:9998/recipe"
 
         try {
             const data = await axios.post(endpoint, form)
@@ -58,6 +59,18 @@ const AddRecipePage: NextPage = ({ user, error } : any) => {
         <div className="xl:h-full flex flex-col md:w-1/2 md:m-auto md:inset-60">
             <form className="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4" onSubmit={addRecipe}>
                 <h1>Formulaire d&apos;ajout d&apos;une recette</h1>
+                <div className="mb-4 mt-5">
+                    <label htmlFor="url" className="block typoColor text-sm font-bold mb-2">
+                      Url de votre image
+                    </label>
+                    <input id="url" 
+                        className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
+                        type="text" 
+                        placeholder="url de l'image de votre recette"
+                        value={recipe.url}
+                        onChange={event => setRecipe({...recipe, url : event.target.value})}
+                        required />
+                </div>
                 <div className="mb-4 mt-5">
                     <label htmlFor="name" className="block typoColor text-sm font-bold mb-2">
                         Nom de la recette
