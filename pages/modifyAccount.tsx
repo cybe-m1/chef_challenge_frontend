@@ -11,7 +11,7 @@ export async function getServerSideProps({req}: any) {
       pars = JSON.parse(pars)
 
       const resp = await axios.get(
-        "http://localhost:8082/user/" + pars
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
       );
 
       return {
@@ -43,7 +43,7 @@ const ModifyAccount: NextPage = ({ user } : any) => {
         event.preventDefault()
         const form = state
         
-        const endpoint = 'http://localhost:8082/user'
+        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user"
 
         try {
             const data = await axios.put(endpoint, form)

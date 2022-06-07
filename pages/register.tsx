@@ -35,7 +35,7 @@ const RegisterPage: NextPage = () => {
             email: state.email,
         }
         
-        const endpoint = 'http://localhost:8082/user'
+        const endpoint = process.env.NEXT_PUBLIC_BACKEND_URL + "/user"
 
         try {
             const data = await axios.post(endpoint, form)

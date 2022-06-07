@@ -10,7 +10,7 @@ export async function getServerSideProps({req}: any) {
       pars = JSON.parse(pars)
 
       const resp = await axios.get(
-        "http://localhost:8082/user/" + pars
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/user/" + pars
       );
 
       return {
