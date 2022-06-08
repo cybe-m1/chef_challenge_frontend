@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import  axios  from "axios"
 import { useRouter } from 'next/router'
 import cookie from "cookie"
+import Link from 'next/link'
 
 export async function getServerSideProps({req}: any) {
   const getCookie = cookie.parse(req.headers.cookie)
@@ -75,14 +76,18 @@ const ReceipesPage: NextPage = ({ user, Recettes, error } : any) => {
             </div>
             <div className="flex flex-wrap text-center">
                 {Recettes.map((Recette: any) => (
-                    <div className="m-2" key={Recette.id}>
-                        <img
-                          className="object-contain h-32 w-68"
-                          src={`${Recette.url}`}
-                          alt={Recette.name}
-                        />
-                        <h3>{Recette.name}</h3>
-                    </div>
+                  <Link key={Recette.id_recipe} href={{ pathname: '/recipe', query: { keyword: Recette.id_recipe } }}>
+                    <a>
+                      <div className="m-2">
+                          <img
+                            className="object-contain h-32 w-68"
+                            src={`${Recette.url}`}
+                            alt={Recette.name}
+                          />
+                          <h3>{Recette.name}</h3>
+                      </div>
+                    </a>
+                  </Link>
                 ))}
             </div>
         </div>

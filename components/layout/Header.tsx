@@ -5,7 +5,7 @@ const Header : NextPage = () => {
     return (
         <header className='shadowNav'>
             <Navbar mainitem={{label: "Chef Challenge", link: "/"}} items = {[
-                {label: "Receipes", link: "/receipes" },
+                {label: "Recipes", link: "/recipes" },
                 {label: "Challenges", link: "/challenges" },
                 {label: "Ingredients", link: "/ingredients" },
                 {label: "Profile", link: "/users" }

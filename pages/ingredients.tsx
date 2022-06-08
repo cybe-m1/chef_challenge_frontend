@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import  axios  from "axios"
-import { useRouter } from 'next/router'
 import cookie from "cookie"
+import Link from 'next/link'
 
 export async function getServerSideProps({req}: any) {
     const getCookie = cookie.parse(req.headers.cookie)
@@ -62,28 +62,30 @@ export async function getServerSideProps({req}: any) {
 
 
 const IngredientsPage: NextPage = ({ user, Ingredients, error } : any) => {
-  const router = useRouter()
-
     if(!error) {
       if(user) {
         return (
           <div className="flex flex-col">
             <div className="flex flex-row items-center justify-between mb-5">
-              <h2>Liste des ingrédient</h2>
+              <h2>Liste de mes ingrédients :</h2>
               <button className=" m-auto backgroundChefButton text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => router.push('/addIngredient')}>
                 Ajouter un ingredient
               </button>
             </div>
             <div className="flex flex-wrap">
                 {Ingredients.map((Ingredient: any) => (
-                <div className="text-center" key={Ingredient.id_challenge}>
-                    <img
-                        className="object-contain h-32 w-68"
-                        src={`${Ingredient.url}`}
-                        alt={Ingredient.name}
-                    />
-                    <h3>{Ingredient.name} {Ingredient.quantity}</h3>
-                </div>
+                <Link key={Ingredient.id_stock} href={{ pathname: '/ingredient', query: { keyword: Ingredient.id_stock } }}>
+                  <a>
+                    <div className="text-center">
+                        <img
+                            className="object-contain h-32 w-68"
+                            src={`${Ingredient.url}`}
+                            alt={Ingredient.name}
+                        />
+                        <h3>{Ingredient.name} {Ingredient.quantity}</h3>
+                    </div>
+                  </a>
+                </Link>
                 ))}
             </div>
           </div>
