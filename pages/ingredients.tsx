@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import  axios  from "axios"
 import cookie from "cookie"
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps({req}: any) {
     const getCookie = cookie.parse(req.headers.cookie)
@@ -62,6 +63,7 @@ export async function getServerSideProps({req}: any) {
 
 
 const IngredientsPage: NextPage = ({ user, Ingredients, error } : any) => {
+    const router = useRouter();
     if(!error) {
       if(user) {
         return (
