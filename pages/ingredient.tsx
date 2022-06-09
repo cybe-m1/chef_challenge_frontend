@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useState } from "react";
 import cookie from "cookie"
 
-export async function getServerSideProps({req}: any) {
+export async function getServerSideProps({req, query}: any) {
     const getCookie = cookie.parse(req.headers.cookie)
     if(getCookie.user.length > 2) {
       let pars = JSON.parse(getCookie.user)
@@ -14,9 +14,14 @@ export async function getServerSideProps({req}: any) {
         "http://localhost:9998/user/" + pars
       );
 
+      const ingredient = await axios.get(
+        "http://localhost:9998/stock/particularStock/" + query.keyword
+      );
+
       return {
         props: {
           user: await resp.data,
+          ingredient: await ingredient.data
         },
       };
     } else {
@@ -29,25 +34,28 @@ export async function getServerSideProps({req}: any) {
 }
 
 
-const AddRecipePage: NextPage = ({ user, error } : any) => {
+const IngredientPage: NextPage = ({ user, ingredient, error } : any) => {
     const router = useRouter()
 
-    const [recipe, setRecipe] = useState({
-        url: "",
-        name: "",
-        description: ""
+    const [ingredientForm, setIngredientForm] = useState({
+        id_user: ingredient.id_user,
+        id_ingredient: ingredient.id_ingredient,
+        id_stock: ingredient.id_stock,
+        name: ingredient.name,
+        url: ingredient.url,
+        quantity: ingredient.quantity
     })
 
-    const addRecipe : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
+    const putIngredient : React.FormEventHandler<HTMLFormElement> = async (event) =>  {
         event.preventDefault()
-        const form = recipe
+        const form = ingredientForm
         
-        const endpoint = "http://localhost:9998/recipe"
+        const endpoint = "http://localhost:9998/stock"
 
         try {
-            const data = await axios.post(endpoint, form)
+            const data = await axios.put(endpoint, form)
             if(data.status === 200) {
-                router.push('/recipes')
+                router.push('/ingredients')
             }
         } catch (error) {
             console.log(error)
@@ -58,41 +66,30 @@ const AddRecipePage: NextPage = ({ user, error } : any) => {
     if (user != '') {
       return (
         <div className="xl:h-full flex flex-col md:w-1/2 md:m-auto md:inset-60">
-            <form className="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4" onSubmit={addRecipe}>
-                <h1>Formulaire d&apos;ajout d&apos;une recette</h1>
-                <div className="mb-4 mt-5">
-                    <label htmlFor="url" className="block typoColor text-sm font-bold mb-2">
-                      Url de votre image
-                    </label>
-                    <input id="url" 
-                        className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
-                        type="text" 
-                        placeholder="url de l'image de votre recette"
-                        value={recipe.url}
-                        onChange={event => setRecipe({...recipe, url : event.target.value})}
-                        required />
-                </div>
+            <form className="bg-white shadow-md rounded mt-12 md:mt-0 px-7 pt-6 pb-8 mb-4" onSubmit={putIngredient}>
+                <h1 className="text-center">Modification d&apos;un ingrédient</h1>
                 <div className="mb-4 mt-5">
                     <label htmlFor="name" className="block typoColor text-sm font-bold mb-2">
-                        Nom de la recette
+                        Nom de l&apos;ingrédient
                     </label>
                     <input id="name" 
                         className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
                         type="text" 
                         placeholder="Nom de l'ingrédient"
-                        value={recipe.name}
-                        onChange={event => setRecipe({...recipe, name : event.target.value})}
+                        value={ingredientForm.name}
+                        onChange={event => setIngredientForm({...ingredientForm, name : event.target.value})}
                         required />
                 </div>
                 <div className="mb-4 mt-5">
-                    <label htmlFor="description" className="block typoColor text-sm font-bold mb-2">
-                        Description
+                    <label htmlFor="quantity" className="block typoColor text-sm font-bold mb-2">
+                        Quantité
                     </label>
-                    <textarea id="description" 
+                    <input id="quantity" 
                         className="shadow appearance-none border rounded w-full py-2 px-3 typoColor leading-tight focus:outline-none focus:shadow-outline" 
-                        placeholder="Description"
-                        value={recipe.description}
-                        onChange={event => setRecipe({...recipe, description : event.target.value})}
+                        type="number" 
+                        placeholder="Quantité en possesion"
+                        value={ingredientForm.quantity}
+                        onChange={event => setIngredientForm({...ingredientForm, quantity : Number(event.target.value)})}
                         required />
                 </div>
                 <div className="flex items-center justify-between mt-3">
@@ -106,10 +103,10 @@ const AddRecipePage: NextPage = ({ user, error } : any) => {
     } else {
       return (
         <div>
-          Veuillez aller vous connectez
+          Merci de vous connectez.
         </div>
       )
     }
 }
 
-export default AddRecipePage
+export default IngredientPage
